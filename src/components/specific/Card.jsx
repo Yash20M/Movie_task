@@ -1,16 +1,17 @@
-// src/components/Card.js
-import React from "react";
-import { FaEdit, FaEye, FaEyeSlash, FaTrash } from "react-icons/fa";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { toggleWatched, deleteMovie } from "../../store/slice/movieSlice";
+import { FaEye, FaEyeSlash, FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ReactTooltip from "react-tooltip";
-import { deleteMovie, toggleWatched } from "../../store/slice/movieSlice";
+import Tooltip from "react-tooltip-lite";
+import DeleteDialog from "./DeleteDialog";
 
 const Card = ({ movie }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPrompt, setShowPrompt] = useState(false);
 
   const handleToggleWatched = (e) => {
     e.stopPropagation();
@@ -21,12 +22,13 @@ const Card = ({ movie }) => {
 
   const handleDelete = (e) => {
     e.stopPropagation();
-    dispatch(deleteMovie(movie.id));
-    toast.error("Movie deleted successfully");
+    setShowPrompt(true); // Show confirmation prompt
   };
 
-  const handleCardClick = () => {
-    navigate(`/details/${movie.id}`);
+  const handleConfirmDelete = () => {
+    dispatch(deleteMovie(movie.id));
+    toast.error("Movie deleted successfully");
+    setShowPrompt(false); // Close confirmation prompt after deletion
   };
 
   const handleEdit = (e) => {
@@ -34,12 +36,13 @@ const Card = ({ movie }) => {
     navigate(`/edit/${movie.id}`);
   };
 
+  const handleCardClick = () => {
+    navigate(`/details/${movie.id}`);
+  };
+
   return (
-    <div
-      onClick={handleCardClick}
-      className="bg-white p-4 rounded shadow-lg relative flex items-center justify-between hover:bg-gray-100 cursor-pointer"
-    >
-      <div>
+    <div className="bg-white p-4 rounded shadow-lg relative  flex justify-between">
+      <div onClick={handleCardClick} className="w-full cursor-pointer">
         <h2 className="text-xl font-bold">{movie.title}</h2>
         <p className="text-gray-500">Genre: {movie.genre}</p>
         <div className="flex items-center">
@@ -60,31 +63,45 @@ const Card = ({ movie }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        <button
-          data-tip={movie.watched ? "Unwatch" : "Watch"}
-          className="text-green-500 hover:text-green-700"
-          onClick={handleToggleWatched}
-        >
-          {movie.watched ? <FaEyeSlash /> : <FaEye />}
-        </button>
+        <Tooltip content={movie.watched ? "Watch" : "Unwatch"}>
+          <div
+            onClick={handleToggleWatched}
+            className="text-green-500 hover:text-green-700 cursor-pointer"
+          >
+            {movie.watched ? (
+              <FaEyeSlash fontSize={22} />
+            ) : (
+              <FaEye fontSize={22} />
+            )}
+          </div>
+        </Tooltip>
 
-        <button
-          data-tip="Edit"
-          className="text-blue-500 hover:text-blue-700"
-          onClick={handleEdit}
-        >
-          <FaEdit />
-        </button>
+        <Tooltip content="Edit">
+          <div
+            onClick={handleEdit}
+            className="text-blue-500 hover:text-blue-700 cursor-pointer"
+          >
+            <FaEdit fontSize={22} />
+          </div>
+        </Tooltip>
 
-        <button
-          data-tip="Delete"
-          onClick={handleDelete}
-          className="text-red-500 hover:text-red-700 cursor-pointer"
-        >
-          <FaTrash />
-        </button>
-        <ReactTooltip />
+        <Tooltip content="Delete">
+          <div
+            onClick={handleDelete}
+            className="text-red-500 hover:text-red-700 cursor-pointer"
+          >
+            <FaTrash fontSize={22} />
+          </div>
+        </Tooltip>
       </div>
+
+      {showPrompt && (
+        <DeleteDialog
+          message={`Do you really want to delete the "${movie.title}" movie?`}
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setShowPrompt(false)}
+        />
+      )}
     </div>
   );
 };
