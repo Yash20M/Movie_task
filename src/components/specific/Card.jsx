@@ -22,13 +22,13 @@ const Card = ({ movie }) => {
 
   const handleDelete = (e) => {
     e.stopPropagation();
-    setShowPrompt(true); // Show confirmation prompt
+    setShowPrompt(true); 
   };
 
   const handleConfirmDelete = () => {
     dispatch(deleteMovie(movie.id));
     toast.error("Movie deleted successfully");
-    setShowPrompt(false); // Close confirmation prompt after deletion
+    setShowPrompt(false); 
   };
 
   const handleEdit = (e) => {
@@ -42,7 +42,7 @@ const Card = ({ movie }) => {
 
   return (
     <div className="bg-white p-4 rounded shadow-lg relative  flex justify-between">
-      <div onClick={handleCardClick} className="cursor-pointer">
+      <div onClick={handleCardClick} className="cursor-pointer w-full">
         <h2 className="text-xl font-bold">{movie.title}</h2>
         <p className="text-gray-500">Genre: {movie.genre}</p>
         <div className="flex items-center">
@@ -63,7 +63,7 @@ const Card = ({ movie }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        <Tooltip content={movie.watched ? "Watch" : "Unwatch"}>
+        <Tooltip content={movie.watched ? "UnWatch" : "watch"}>
           <div
             onClick={handleToggleWatched}
             className="text-green-500 hover:text-green-700 cursor-pointer"
