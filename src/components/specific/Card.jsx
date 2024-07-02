@@ -41,8 +41,8 @@ const Card = ({ movie }) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded shadow-lg relative cursor-pointer flex justify-between">
-      <div onClick={handleCardClick}>
+    <div className="bg-white p-4 rounded shadow-lg relative  flex justify-between">
+      <div onClick={handleCardClick} className="cursor-pointer">
         <h2 className="text-xl font-bold">{movie.title}</h2>
         <p className="text-gray-500">Genre: {movie.genre}</p>
         <div className="flex items-center">
@@ -66,7 +66,7 @@ const Card = ({ movie }) => {
         <Tooltip content={movie.watched ? "Watch" : "Unwatch"}>
           <div
             onClick={handleToggleWatched}
-            className="text-green-500 hover:text-green-700"
+            className="text-green-500 hover:text-green-700 cursor-pointer"
           >
             {movie.watched ? <FaEyeSlash /> : <FaEye />}
           </div>
@@ -75,7 +75,7 @@ const Card = ({ movie }) => {
         <Tooltip content="Edit">
           <div
             onClick={handleEdit}
-            className="text-blue-500 hover:text-blue-700"
+            className="text-blue-500 hover:text-blue-700 cursor-pointer"
           >
             <FaEdit />
           </div>

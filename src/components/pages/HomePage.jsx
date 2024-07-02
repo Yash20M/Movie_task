@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import MovieForm from "../specific/MovieForm";
 import Card from "../specific/Card";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation } from "react-router-dom";
 import { IoCloseCircleSharp } from "react-icons/io5";
@@ -40,8 +39,6 @@ const HomePage = () => {
   });
   return (
     <div className="container mx-auto p-4">
-      <ToastContainer />
-
       <div className="flex w-full justify-center items-center flex-col gap-3">
         <h1 className="text-3xl font-bold mb-4">Add Your Movies...</h1>
         <button
@@ -54,7 +51,7 @@ const HomePage = () => {
       <h2 className="text-3xl font-bold mb-4 mt-4">Movie List</h2>
       {showForm && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-[2]">
-          <div className="bg-white p-4 rounded shadow-lg relative w-full max-w-md h-[95vh]">
+          <div className="bg-white p-4 rounded shadow-lg relative w-full max-w-md ">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
               onClick={handleCloseForm}
